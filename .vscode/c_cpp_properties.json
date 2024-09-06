@@ -4,9 +4,6 @@
             "name": "Win32",
             "includePath": [
                 "C:\\mingw64\\include",
-                "C:\\mingw64\\x86_64-w64-mingw32\\include",
-                "C:\\mingw64\\lib\\gcc\\x86_64-w64-mingw32\\13.1.0\\include",
-                "C:\\mingw64\\lib\\gcc\\x86_64-w64-mingw32\\13.1.0\\include\\c++",
                 "${workspaceFolder}/**"
             ],
             "defines": [
@@ -14,9 +11,9 @@
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "C:\\mingw64\\bin\\gcc.exe",
+            "compilerPath": "C:/mingw64/bin/g++.exe",
             "cStandard": "c17",
-            "cppStandard": "gnu++20",
+            "cppStandard": "c++20",
             "intelliSenseMode": "windows-gcc-x64"
         }
     ],

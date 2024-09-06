@@ -1,5 +1,9 @@
-#pragma once
+#ifndef TEXTURE_H
+#define TEXTURE_H
+
 #include <glad/glad.h>
+
+#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 #include <iostream>
@@ -28,7 +32,7 @@ public:
         else
             std::cout << "ERROR: Parameter 'MipmapFiltering' is not one of gl_texture_filtering_parameter.\n";
 
-        unsigned char* data = stbi_load(*picturePath, &width, &height, &nrChannels, 0);
+        unsigned char* data = stbi_load(picturePath, &width, &height, &nrChannels, 0);
         unsigned int texture;
         glGenTextures(1, &texture);
         glActiveTexture(GL_TEXTURE0 + loc);
@@ -49,6 +53,6 @@ public:
 
 };
 
-
+#endif
 
 //int Texture2D::TextureUnit = 0;

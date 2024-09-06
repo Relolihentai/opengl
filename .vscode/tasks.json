@@ -6,6 +6,7 @@
             "command": "C:\\mingw64\\bin\\g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
+                "-std=c++2a",
                 "-g",
                 "${fileDirname}\\src\\glad.c",
                 "${file}",

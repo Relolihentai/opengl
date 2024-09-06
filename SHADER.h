@@ -1,8 +1,5 @@
 #ifndef SHADER_H
-//测试SHADER_H是否被定义过
-
 #define SHADER_H
-//如果没有被定义过则预处理以下头文件
 
 #include <glad/glad.h>
 
@@ -10,11 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include "stb_image.h"
 #include <glm/glm.hpp>
-
-#endif
-//如果定义过则忽略上一段，预处理以下头文件
 
 class Shader
 {
@@ -123,11 +116,25 @@ public:
     {
         glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
     }
+    void setVec2(const std::string &name, float v1, float v2) const
+    {
+        glUniform2f(glGetUniformLocation(ID, name.c_str()), v1, v2);
+    }
+    void setVec3(const std::string &name, float v1, float v2, float v3) const
+    {
+        glUniform3f(glGetUniformLocation(ID, name.c_str()), v1, v2, v3);
+    }
+    void setVec4(const std::string &name, float v1, float v2, float v3, float v4) const
+    {
+        glUniform4f(glGetUniformLocation(ID, name.c_str()), v1, v2, v3, v4);
+    }
     //uniform工具，分别设置bool，int float的uniform的值
     void setMat4(const std::string &name, const glm::mat4 &mat) const
     {
         glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
     }
 };
+
+#endif
 
 
