@@ -120,15 +120,30 @@ public:
     {
         glUniform2f(glGetUniformLocation(ID, name.c_str()), v1, v2);
     }
+    void setVec2(const std::string &name, glm::vec2 value) const
+    {
+        glUniform2f(glGetUniformLocation(ID, name.c_str()), value.x, value.y);
+    }
     void setVec3(const std::string &name, float v1, float v2, float v3) const
     {
         glUniform3f(glGetUniformLocation(ID, name.c_str()), v1, v2, v3);
+    }
+    void setVec3(const std::string &name, glm::vec3 value) const
+    {
+        glUniform3f(glGetUniformLocation(ID, name.c_str()), value.x, value.y, value.z);
     }
     void setVec4(const std::string &name, float v1, float v2, float v3, float v4) const
     {
         glUniform4f(glGetUniformLocation(ID, name.c_str()), v1, v2, v3, v4);
     }
-    //uniform工具，分别设置bool，int float的uniform的值
+    void setVec4(const std::string &name, glm::vec4 value) const
+    {
+        glUniform4f(glGetUniformLocation(ID, name.c_str()), value.x, value.y, value.z, value.w);
+    }
+    void setMat3(const std::string &name, const glm::mat3 &mat) const
+    {
+        glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+    }
     void setMat4(const std::string &name, const glm::mat4 &mat) const
     {
         glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);

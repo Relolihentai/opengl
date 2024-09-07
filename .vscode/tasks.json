@@ -13,6 +13,7 @@
                 "-I", "C:\\mingw64\\include",
                 "-L", "C:\\mingw64\\lib",
                 "-l:glfw3.dll",
+                "-l:libassimp-5.dll",
                 "-o",
                 "${fileDirname}\\build\\${fileBasenameNoExtension}.exe"
             ],

@@ -1,6 +1,7 @@
 #version 450 core
 
 uniform mat4 model;
+uniform mat3 normalModel;
 uniform mat4 view;
 uniform mat4 projection;
 

@@ -70,9 +70,6 @@ int main()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-    //初始化GLAD
-
-    Shader ourShader(R"(E:/games/opengl/shader/shaderv.glsl)", R"(E:/games/opengl/shader/shaderf.glsl)");
 
     float vertices[] = {
             -0.5f, -0.5f, -0.5f, 0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
@@ -123,17 +120,15 @@ int main()
                     1, 2, 3
             };
 
-    unsigned int VBO, VAO, EBO;
+    unsigned int VBO, VAO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
+    unsigned int lightVAO;
+    glGenVertexArrays(1, &lightVAO);
 
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
@@ -143,18 +138,34 @@ int main()
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
     
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindVertexArray(lightVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
     glBindVertexArray(0);
 
     Texture2D* texture1 = new Texture2D(R"(E:\games\opengl_sucai\photo\LA PLUMA2.jpg)",
                                         GL_REPEAT, GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR, 0);
+
+    Shader ourShader(R"(E:/games/opengl/shader/shaderv.glsl)", R"(E:/games/opengl/shader/shaderf.glsl)");
     ourShader.use();
-    glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
-    ourShader.setInt("texture1", 0);
-    ourShader.setVec3("objectColor", 1.0f, 0.0f, 0.0f);
-    ourShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-    ourShader.setVec3("lightPos", lightPos.x, lightPos.y, lightPos.z);
+    glm::vec3 pointLightPos (0.2f, 0.5f, 1.0f);
+    glm::vec3 pointLightColor (1.0f, 1.0f, 1.0f);
+    glm::vec3 directionalLightColor (1.0f, 1.0f, 1.0f);
+    ourShader.setInt("material.texture1", 0);
+    ourShader.setVec3("material.baseColor", 1.0f, 1.0f, 1.0f);
+    ourShader.setVec3("directionalLight.color", directionalLightColor);
+    ourShader.setVec3("directionalLight.direction", 0.2f, -1.0f, -0.3f);
+    ourShader.setVec3("pointLight.color", pointLightColor);
+    ourShader.setVec3("pointLight.position", pointLightPos);
+    ourShader.setFloat("pointLight.constant",  1.0f);
+    ourShader.setFloat("pointLight.linear",    0.09f);
+    ourShader.setFloat("pointLight.quadratic", 0.032f);
+
+    Shader lightShader(R"(E:/games/opengl/shader/shaderv.glsl)", R"(E:/games/opengl/shader/mainLight_F.glsl)");
+    lightShader.use();
+    lightShader.setVec3("lightColor", pointLightColor);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -167,23 +178,28 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glBindVertexArray(VAO);
-
+        ourShader.use();
         glm::mat4 projection = glm::perspective(glm::radians(fov), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         ourShader.setMat4("projection", projection);
         glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
         ourShader.setMat4("view", view);
-
+        ourShader.setVec3("cameraPos", cameraPos);
         glm::mat4 model = glm::mat4(1.0f);
         float angle = 20.0f ;
         model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
         ourShader.setMat4("model", model);
+        glm::mat3 normalModel = glm::mat3(glm::transpose(glm::inverse(model)));
+        ourShader.setMat3("normalModel", normalModel);
         glDrawArrays(GL_TRIANGLES, 0, 36);
-
         
+        glBindVertexArray(lightVAO);
+        lightShader.use();
+        lightShader.setMat4("projection", projection);
+        lightShader.setMat4("view", view);
         model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPos);
-        model = glm::scale(model, glm::vec3(2.0f));
-        ourShader.setMat4("model", model);
+        model = glm::translate(model, pointLightPos);
+        model = glm::scale(model, glm::vec3(0.2f));
+        lightShader.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         glfwSwapBuffers(window);
@@ -192,7 +208,6 @@ int main()
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
     glDeleteProgram(ourShader.ID);
     glfwTerminate();
     return 0;
