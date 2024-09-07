@@ -1,12 +1,7 @@
-#include <iostream>
-#include <valarray>
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
-#include "SHADER.h"
+#include "Library.h"
+#include "Shader.h"
 #include "Texture.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include "Mesh.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 //回调函数，根据窗口大小的调整而调整视口大小
@@ -153,7 +148,7 @@ int main()
     glm::vec3 pointLightPos (0.2f, 0.5f, 1.0f);
     glm::vec3 pointLightColor (1.0f, 1.0f, 1.0f);
     glm::vec3 directionalLightColor (1.0f, 1.0f, 1.0f);
-    ourShader.setInt("material.texture1", 0);
+    ourShader.setInt("material.albedoTex", 0);
     ourShader.setVec3("material.baseColor", 1.0f, 1.0f, 1.0f);
     ourShader.setVec3("directionalLight.color", directionalLightColor);
     ourShader.setVec3("directionalLight.direction", 0.2f, -1.0f, -0.3f);

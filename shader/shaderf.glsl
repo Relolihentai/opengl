@@ -17,7 +17,9 @@ struct PointLight
 
 struct Material
 {
-    sampler2D texture1;
+    sampler2D albedoTex;
+    sampler2D metallic_roughnessTex;
+    sampler2D emission_aoTex;
     vec3 baseColor;
 };
 
@@ -45,7 +47,7 @@ void main()
     float lambert = max(dot(lightDir, worldNormal), 0);
     float phong = pow(max(dot(viewDir, reflectDir), 0), 32);
 
-    vec4 mainTex = texture(material.texture1, TexCoord);
+    vec4 mainTex = texture(material.albedoTex, TexCoord);
     vec3 mainTexColor = mainTex.xyz;
     vec3 diffuse = vec3(lambert, lambert, lambert);
     vec3 specular = phong * lightColor;
