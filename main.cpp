@@ -91,11 +91,32 @@ int main()
     ourShader.setVec3("camera.horizontal", 4.0, 0.0, 0.0);
     ourShader.setVec3("camera.vertical", 0.0, 2.0, 0.0);
     ourShader.setVec3("camera.origin", 0.0, 0.0, 0.0);
-    ourShader.setInt("world.objectCount", 2);
-    ourShader.setVec3("world.objects[0].center", 0.0, 0.0, -1.0);
-    ourShader.setFloat("world.objects[0].radius", 0.5);
-    ourShader.setVec3("world.objects[1].center", 0.0, -100.5, -1.0);
-    ourShader.setFloat("world.objects[1].radius", 100.0);
+    ourShader.setInt("world.objectCount", 4);
+    
+    ourShader.setVec3("world.objects[0].center", 0.0, -100.5, -1.0);
+    ourShader.setFloat("world.objects[0].radius", 100.0);
+    ourShader.setInt("world.objects[0].materialType", 0);
+    ourShader.setInt("world.objects[0].material", 0);
+    ourShader.setVec3("lambertMaterials[0].albedo", 0.8, 0.8, 0.0);
+
+    ourShader.setVec3("world.objects[1].center", 0.0, 0.0, -1.0);
+    ourShader.setFloat("world.objects[1].radius", 0.5);
+    ourShader.setInt("world.objects[1].materialType", 0);
+    ourShader.setInt("world.objects[1].material", 1);
+    ourShader.setVec3("lambertMaterials[1].albedo", 0.2, 0.3, 0.7);
+
+    ourShader.setVec3("world.objects[2].center", 1.0, 0.0, -1.0);
+    ourShader.setFloat("world.objects[2].radius", 0.5);
+    ourShader.setInt("world.objects[2].materialType", 1);
+    ourShader.setInt("world.objects[2].material", 0);
+    ourShader.setVec3("matallicMaterials[0].albedo", 1, 1, 1);
+
+    ourShader.setVec3("world.objects[3].center", -1.0, 0.0, -1.0);
+    ourShader.setFloat("world.objects[3].radius", 0.5);
+    ourShader.setInt("world.objects[3].materialType", 1);
+    ourShader.setInt("world.objects[3].material", 1);
+    ourShader.setVec3("matallicMaterials[1].albedo", 0.5, 0.5, 0.5);
+
     ourShader.setVec2("screenSize", SCR_WIDTH, SCR_HEIGHT);
 
     while (!glfwWindowShouldClose(window))
