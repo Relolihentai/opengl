@@ -10,8 +10,6 @@
                 "-g",
                 "${fileDirname}\\src\\glad.c",
                 "${fileDirname}\\Shader.cpp",
-                "${fileDirname}\\Mesh.cpp",
-                "${fileDirname}\\Model.cpp",
                 "${file}",
                 "-I", "C:\\mingw64\\include",
                 "-L", "C:\\mingw64\\lib",
